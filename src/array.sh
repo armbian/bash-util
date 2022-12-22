@@ -3,11 +3,6 @@
 # @file Array
 # @brief Functions for array operations and manipulations.
 
-_print_missing() {
-    printf "%s: Missing arguments\n" "${FUNCNAME[1]}"
-    return 2
-}
-
 # @description Check if item exists in the given array.
 #
 # @example
@@ -23,7 +18,7 @@ _print_missing() {
 # @exitcode 1 If no match found in the array.
 # @exitcode 2 Function missing arguments.
 array::contains() {
-    (( $# < 2 )) && { _print_missing; return; }
+    (( $# < 2 )) && return 2
 
     local needle="${1:-}"
     shift
@@ -53,7 +48,7 @@ array::contains() {
 #
 # @stdout Deduplicated array.
 array::dedupe() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -A found
     local -a unique
@@ -103,7 +98,7 @@ array::is_empty() {
 #
 # @stdout String containing a string representation of all the array elements in the same order with the glue string between each element.
 array::join() {
-    (( $# < 2 )) && { _print_missing; return; }
+    (( $# < 2 )) && return 2
 
     local glue="${1}"
     shift
@@ -133,7 +128,7 @@ array::join() {
 #
 # @stdout The reversed array.
 array::reverse() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -a arr=("$@")
     local elem head tail
@@ -161,7 +156,7 @@ array::reverse() {
 #
 # @stdout Random item out of the array.
 array::random_element() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -a arr=("$@")
     printf "%s\n" "${arr[RANDOM % $#]}"
@@ -187,7 +182,7 @@ array::random_element() {
 #
 # @stdout Sorted array.
 array::sort() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -a arr=("$@") sorted
 
@@ -223,7 +218,7 @@ array::sort() {
 #
 # @stdout Reverse-sorted array.
 array::rsort() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -a arr=("$@") sorted
 
@@ -258,7 +253,7 @@ array::rsort() {
 #
 # @stdout Bubble-sorted array.
 array::bsort() {
-    (( $# == 0 )) && { _print_missing; return; }
+    (( $# == 0 )) && return 2
 
     local -a arr=("$@")
 
@@ -297,7 +292,7 @@ array::bsort() {
 #
 # @stdout Merged array.
 array::merge() {
-    (( $# != 2 )) && { _print_missing; return; }
+    (( $# != 2 )) && return 2
 
     local -a arr1=("${!1}") arr2=("${!2}")
     local out=("${arr1[@]}" "${arr2[@]}")
