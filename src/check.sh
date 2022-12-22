@@ -14,7 +14,7 @@
 # @exitcode 1 If the command does not exist.
 # @exitcode 2 Function missing arguments.
 check::command_exists() {
-    (( $# == 0 )) && { printf "%s: Missing arguments\n" "${FUNCNAME[0]}"; return 2; }
+    (( $# == 0 )) && return 2
     hash "${1}" 2> /dev/null
 }
 
