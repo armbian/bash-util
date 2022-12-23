@@ -43,10 +43,10 @@ collection::each() {
     local arg pred="$1" IFS=$'\n'
     while read -r arg; do
         if [[ "$pred" == *"$"* ]]; then
-            eval "$pred" || return
+            eval "$pred"
         else
-            eval "$pred" "'$arg'" || return
-        fi
+            eval "$pred" "'$arg'"
+        fi || return
     done
 }
 
@@ -68,10 +68,10 @@ collection::every() {
     local arg pred="$1" IFS=$'\n'
     while read -r arg; do
         if [[ "$pred" == *"$"* ]]; then
-            eval "$pred" || return 1
+            eval "$pred"
         else
-            eval "$pred" "'$arg'" || return 1
-        fi
+            eval "$pred" "'$arg'"
+        fi || return 1
     done
 }
 
@@ -101,8 +101,7 @@ collection::filter() {
             eval "$pred"
         else
             eval "$pred" "'$arg'"
-        fi
-        (( $? == 0 )) && printf "%s\n" "$arg"
+        fi && printf "%s\n" "$arg"
     done
 }
 
