@@ -40,12 +40,12 @@
 collection::each() {
     (( $# == 0 )) && return 2
 
-    local arg pred="${1}" IFS=$'\n'
+    local arg pred="$1" IFS=$'\n'
     while read -r arg; do
-        if [[ "${pred}" == *"$"* ]]; then
-            eval "${pred}" || return
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred" || return
         else
-            eval "${pred}" "'${arg}'" || return
+            eval "$pred" "'$arg'" || return
         fi
     done
 }
@@ -65,12 +65,12 @@ collection::each() {
 collection::every() {
     (( $# == 0 )) && return 2
 
-    local arg pred="${1}" IFS=$'\n'
+    local arg pred="$1" IFS=$'\n'
     while read -r arg; do
-        if [[ "${pred}" == *"$"* ]]; then
-            eval "${pred}" || return 1
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred" || return 1
         else
-            eval "${pred}" "'${arg}'" || return 1
+            eval "$pred" "'$arg'" || return 1
         fi
     done
 }
@@ -95,14 +95,14 @@ collection::every() {
 collection::filter() {
     (( $# == 0 )) && return 2
 
-    local arg pred="${1}" IFS=$'\n'
+    local arg pred="$1" IFS=$'\n'
     while read -r arg; do
-        if [[ "${pred}" == *"$"* ]]; then
-            eval "${pred}"
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred"
         else
-            eval "${pred}" "'${arg}'"
+            eval "$pred" "'$arg'"
         fi
-        (( $? == 0 )) && printf "%s\n" "${arg}"
+        (( $? == 0 )) && printf "%s\n" "$arg"
     done
 }
 
