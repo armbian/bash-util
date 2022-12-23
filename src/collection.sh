@@ -50,34 +50,28 @@ collection::each() {
     done
 }
 
-# @description Checks if iteratee function returns truthy for all elements of collection. Iteration is stopped once predicate returns false.
-# Input to the function can be a pipe output, here-string or file.
+# @description Check if the predicate returns true for all elements of the collection. Iteration is stopped once the predicate returns false.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
-#   arri=("1" "2" "3" "4")
-#   printf "%s\n" "${arri[@]}" | collection::every "variable::is_numeric"
+#   arr=("1" "2" "3" "4")
+#   printf "%s\n" "${arr[@]}" | collection::every "variable::is_numeric"
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If successful.
-# @exitcode 1 If iteratee function fails.
+# @exitcode 0 If the predicate was true for every element.
+# @exitcode 1 Otherwise.
 # @exitcode 2 Function missing arguments.
 collection::every() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
-    while read -r it; do
-        if [[ "${func}" == *"$"* ]]; then
-            eval "${func}"
+    local arg pred="${1}" IFS=$'\n'
+    while read -r arg; do
+        if [[ "${pred}" == *"$"* ]]; then
+            eval "${pred}" || return 1
         else
-            eval "${func}" "'${it}'"
+            eval "${pred}" "'${arg}'" || return 1
         fi
-        local -i ret="$?"
-
-        if [[ $ret -ne 0 ]]; then
-            return 1
-        fi
-
     done
 }
 
