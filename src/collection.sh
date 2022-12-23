@@ -143,29 +143,31 @@ collection::find() {
     return 1
 }
 
-# @description Invokes the iteratee with each element passed as argument to the iteratee.
-# Input to the function can be a pipe output, here-string or file.
+# @description Invoke function with the elements passed as arguments to it.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
 #   opt=("-a" "-l")
 #   printf "%s\n" "${opt[@]}" | collection::invoke "ls"
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of function to invoke.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
-# @exitcode other exitcode returned by iteratee.
+# @exitcode ? Exit code returned by the function.
 #
-# @stdout Output from the iteratee function.
+# @stdout Output from the function.
 collection::invoke() {
     (( $# == 0 )) && return 2
 
+    local fn="$1"
+
     local -a args=()
-    local func="${1}"
     while read -r it; do
-        args=("${args[@]}" "$it")
+        args=("${args[@]}" "$it");
     done
 
-    eval "${func}" "${args[@]}"
+    eval "$fn" "${args[@]}"
 }
 
 # @description Creates an array of values by running each element in array through iteratee.
