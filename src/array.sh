@@ -24,8 +24,8 @@ array::contains() {
     shift
 
     local elem
-    for elem in "${@}"; do
-        [[ "${elem}" == "${needle}" ]] && return 0
+    for elem in "$@"; do
+        [[ "$elem" == "$needle" ]] && return 0
     done
 
     return 1
@@ -51,15 +51,15 @@ array::dedupe() {
     (( $# == 0 )) && return 2
 
     local -A found
-    local -a unique
+    local -a uniq
 
-    local elem
-    for elem in "$@"; do
-        [[ -z ${elem} || ${found[${elem}]} ]] && continue
-        unique+=("${elem}") && found[${elem}]=1
+    local el
+    for el in "$@"; do
+        [[ -z "$el" || -n "${found[$el]}" ]] && continue
+        uniq+=("$el") && found[$el]=1
     done
 
-    printf "%s\n" "${unique[@]}"
+    printf "%s\n" "${uniq[@]}"
 }
 
 # @description Check if a given array is empty.
@@ -100,12 +100,12 @@ array::is_empty() {
 array::join() {
     (( $# < 2 )) && return 2
 
-    local glue="${1}"
+    local glue="$1"
     shift
 
-    printf "%s" "${1}"
+    printf "%s" "$1"
     shift
-    printf "%s" "${@/#/${glue}}"
+    printf "%s" "${@/#/$glue}"
     printf "\n"
 }
 
@@ -186,14 +186,14 @@ array::sort() {
 
     local -a arr=("$@") sorted
 
-    local noglobtate="$(shopt -po noglob)"
+    local noglobstate="$(shopt -po noglob)"
     set -o noglob
 
     local IFS=$'\n'
     sorted=($(sort <<< "${arr[*]}"))
     unset IFS
 
-    eval "${noglobtate}"
+    eval "$noglobstate"
 
     printf "%s\n" "${sorted[@]}"
 }
@@ -222,14 +222,14 @@ array::rsort() {
 
     local -a arr=("$@") sorted
 
-    local noglobtate="$(shopt -po noglob)"
+    local noglobstate="$(shopt -po noglob)"
     set -o noglob
 
     local IFS=$'\n'
     sorted=($(sort -r <<< "${arr[*]}"))
     unset IFS
 
-    eval "${noglobtate}"
+    eval "$noglobstate"
 
     printf "%s\n" "${sorted[@]}"
 }
