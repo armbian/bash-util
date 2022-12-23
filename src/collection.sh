@@ -12,7 +12,7 @@
 #   }
 #   arr=("a b" "c d" "a" "d")
 #   printf "%s\n" "${arr[@]}" | collection::each test_func
-#   # alternative version
+#   # alternate version
 #   collection::each test_func  < <(printf "%s\n" "${arr[@]}")
 #   #Output
 #   print value: a b
@@ -105,43 +105,41 @@ collection::filter() {
     done
 }
 
-# @description Iterates over elements of collection, returning the first element where iteratee returns true.
-# Input to the function can be a pipe output, here-string or file.
+# @description Iterate over elements of a collection, returning the first element for which the predicate is true.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
-#   arr=("1" "2" "3" "a")
-#   check_a(){
-#       [[ "$1" = "a" ]]
+#   arr=("1" "2" "a" "3")
+#   is_a() {
+#       [[ "$1" == "a" ]]
 #   }
-#   printf "%s\n" "${arr[@]}" | collection::find "check_a"
+#   printf "%s\n" "${arr[@]}" | collection::find "is_a"
+#   # alternate version
+#   collection::find '[[ $it == "a" ]]' < <(printf "%s\n" "${arr[@]}")
 #   #Output
 #   a
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If successful.
-# @exitcode 1 If no match found.
+# @exitcode 0 If an element satisfying the predicate was found.
+# @exitcode 1 Otherwise.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout first array value matching the iteratee function.
+# @stdout First element satisfying the predicate.
 collection::find() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
+    local it pred="$1" IFS=$'\n'
     while read -r it; do
-
-        if [[ "${func}" == *"$"* ]]; then
-            eval "${func}"
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred"
         else
-            eval "${func}" "'${it}'"
-        fi
-        local -i ret="$?"
-        if [[ $ret = 0 ]]; then
-            printf "%s" "${it}"
+            eval "$pred" "'$it'"
+        fi && {
+            printf "%s\n" "$it"
             return 0
-        fi
+        }
     done
-
     return 1
 }
 
