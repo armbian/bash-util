@@ -15,7 +15,7 @@
 # @exitcode 2 Function missing arguments.
 check::command_exists() {
     (( $# == 0 )) && return 2
-    hash "${1}" 2> /dev/null
+    hash "$1" 2> /dev/null
 }
 
 # @description Check if the script is running with root privileges.
