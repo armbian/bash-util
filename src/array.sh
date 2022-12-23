@@ -3,7 +3,7 @@
 # @file Array
 # @brief Functions for array operations and manipulations.
 
-# @description Check if item exists in the given array.
+# @description Check if an item exists in the given array.
 #
 # @example
 #   arr=("a" "b" "c")
@@ -90,8 +90,8 @@ array::is_empty() {
 #   #Output
 #   abcd
 #
-# @arg $1 string String to join the array elements (glue).
-# @arg $2 array Array to be joined with glue string.
+# @arg $1 string String to join the array elements with (glue).
+# @arg $2 array Array to be joined with the glue string.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -121,7 +121,7 @@ array::join() {
 #   2
 #   1
 #
-# @arg $1 array The input array.
+# @arg $1 array Array to be reversed.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -141,7 +141,7 @@ array::reverse() {
     printf "%s\n" "${arr[@]}"
 }
 
-# @description Returns a random item from the array.
+# @description Return a random item from the array.
 #
 # @example
 #   arr=("a" "b" "c" "d")
@@ -149,7 +149,7 @@ array::reverse() {
 #   #Output
 #   c
 #
-# @arg $1 array The input array.
+# @arg $1 array Array to pick random items from.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -175,7 +175,7 @@ array::random_element() {
 #   a c
 #   d
 #
-# @arg $1 array The input array.
+# @arg $1 array Array to be sorted.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -211,7 +211,7 @@ array::sort() {
 #   2
 #   1
 #
-# @arg $1 array The input array.
+# @arg $1 array Array to be sorted.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -246,7 +246,7 @@ array::rsort() {
 #   4
 #   5
 #
-# @arg $1 array The input array.
+# @arg $1 array Array to be sorted.
 #
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
@@ -272,7 +272,7 @@ array::bsort() {
 }
 
 # @description Merge two arrays.
-# Pass the variable name of the array instead of the value of the variable.
+# Pass variable names of the arrays instead of their values.
 #
 # @example
 #   a=("a" "c")
@@ -290,7 +290,7 @@ array::bsort() {
 # @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout Merged array.
+# @stdout Merged arrays.
 array::merge() {
     (( $# != 2 )) && return 2
 
