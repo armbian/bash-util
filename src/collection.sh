@@ -75,37 +75,34 @@ collection::every() {
     done
 }
 
-# @description Iterates over elements of array, returning all elements where iteratee returns true.
-# Input to the function can be a pipe output, here-string or file.
+# @description Iterate over elements of a collection, returning all elements for which the predicate is true.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
-#   arri=("1" "2" "3" "a")
-#   printf "%s\n" "${arri[@]}" | collection::filter "variable::is_numeric"
-#   #output
+#   arr=("1" "2" "3" "a")
+#   printf "%s\n" "${arr[@]}" | collection::filter "variable::is_numeric"
+#   #Output
 #   1
 #   2
 #   3
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout array values matching the iteratee function.
+# @stdout array Values for which the predicate is true.
 collection::filter() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
-    while read -r it; do
-        if [[ "${func}" == *"$"* ]]; then
-            eval "${func}"
+    local arg pred="${1}" IFS=$'\n'
+    while read -r arg; do
+        if [[ "${pred}" == *"$"* ]]; then
+            eval "${pred}"
         else
-            eval "${func}" "'${it}'"
+            eval "${pred}" "'${arg}'"
         fi
-        local -i ret="$?"
-        if [[ $ret = 0 ]]; then
-            printf "%s\n" "${it}"
-        fi
+        (( $? == 0 )) && printf "%s\n" "${arg}"
     done
 }
 
