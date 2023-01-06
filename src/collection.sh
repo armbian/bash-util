@@ -8,7 +8,7 @@
 #
 # @example
 #   test_func() {
-#      printf "print value: %s\n" "$1"
+#       printf "print value: %s\n" "$1"
 #   }
 #   arr=("a b" "c d" "a" "d")
 #   printf "%s\n" "${arr[@]}" | collection::each test_func
@@ -170,46 +170,35 @@ collection::invoke() {
     eval "$fn" "${args[@]}"
 }
 
-# @description Creates an array of values by running each element in array through iteratee.
+# @description Apply predicate function to each element of a collection and return the results.
 # Input to the function can be a pipe output, here-string or file.
+#
 # @example
-#   arri=("1" "2" "3")
-#   add_one(){
-#     i=${1}
-#     i=$(( i + 1 ))
-#     printf "%s\n" "$i"
+#   arr=(1 2 3)
+#   add_one() {
+#       printf "%s\n" "$(( $1 + 1 ))"
 #   }
-#   printf "%s\n" "${arri[@]}" | collection::map "add_one"
+#   printf "%s\n" "${arr[@]}" | collection::map "add_one"
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
-# @exitcode other exitcode returned by iteratee.
+# @exitcode ? Exit code returned by the function.
 #
-# @stdout Output result of iteratee on value.
+# @stdout Output of the predicate function for each element.
 collection::map() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
-    local out
-
+    local it out pred="$1" IFS=$'\n'
     while read -r it; do
-
-        if [[ "${func}" == *"$"* ]]; then
-            out="$("${func}")"
+        if [[ "$pred" == *"$"* ]]; then
+            out="$("$pred")"
         else
-            out="$("${func}" "$it")"
-        fi
+            out="$("$pred" "$it")"
+        fi || return
 
-        local -i ret=$?
-
-        if [[ $ret -ne 0 ]]; then
-            return $ret
-        fi
-
-        printf "%s\n" "${out}"
+        printf "%s\n" "$out"
     done
 }
 
