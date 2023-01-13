@@ -90,30 +90,27 @@ date::add_months_to() {
     printf "%s" "$new_ts"
 }
 
-# @description Add number of years from specified timestamp.
-# If number of years not specified then it defaults to 1 year.
+# @description Add number of years to the specified timestamp.
 #
 # @example
-#   echo "$(date::add_years_to "1594143480")"
+#   date::add_years_to 1594143480 1
 #   #Output
 #   1625679480
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of years (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of years to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::add_years_to() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts year
-    ts="${1}"
-    year=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${year} year" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts years=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') + $years year" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
 # @description Add number of weeks from specified timestamp.
