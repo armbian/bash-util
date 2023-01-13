@@ -113,30 +113,27 @@ date::add_years_to() {
     printf "%s" "$new_ts"
 }
 
-# @description Add number of weeks from specified timestamp.
-# If number of weeks not specified then it defaults to 1 week.
+# @description Add number of weeks to the specified timestamp.
 #
 # @example
-#   echo "$(date::add_weeks_to "1594143480")"
+#   date::add_weeks_to 1594143480 1
 #   #Output
 #   1594748280
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of weeks (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of weeks to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::add_weeks_to() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts week
-    ts="${1}"
-    week=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${week} week" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts weeks=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') + $weeks week" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
 # @description Add number of hours from specified timestamp.
