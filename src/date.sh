@@ -17,7 +17,7 @@
 #
 # @stdout current timestamp.
 date::now() {
-    declare now
+    local now
     now="$(date --universal +%s)" || return $?
     printf "%s" "${now}"
 }
@@ -39,7 +39,7 @@ date::now() {
 date::epoc() {
     (( $# == 0 )) && return 2
 
-    declare date
+    local date
     date=$(date -d "${1}" +"%s") || return $?
     printf "%s" "${date}"
 }
@@ -63,7 +63,7 @@ date::epoc() {
 date::add_days_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp day
+    local timestamp new_timestamp day
     timestamp="${1}"
     day=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${day} day" +'%s')" || return $?
@@ -89,7 +89,7 @@ date::add_days_from() {
 date::add_months_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp month
+    local timestamp new_timestamp month
     timestamp="${1}"
     month=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${month} month" +'%s')" || return $?
@@ -115,7 +115,7 @@ date::add_months_from() {
 date::add_years_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp year
+    local timestamp new_timestamp year
     timestamp="${1}"
     year=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${year} year" +'%s')" || return $?
@@ -141,7 +141,7 @@ date::add_years_from() {
 date::add_weeks_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp week
+    local timestamp new_timestamp week
     timestamp="${1}"
     week=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${week} week" +'%s')" || return $?
@@ -167,7 +167,7 @@ date::add_weeks_from() {
 date::add_hours_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp hour
+    local timestamp new_timestamp hour
     timestamp="${1}"
     hour=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${hour} hour" +'%s')" || return $?
@@ -193,7 +193,7 @@ date::add_hours_from() {
 date::add_minutes_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="${1}"
     minute=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${minute} minute" +'%s')" || return $?
@@ -219,7 +219,7 @@ date::add_minutes_from() {
 date::add_seconds_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="${1}"
     second=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${second} second" +'%s')" || return $?
@@ -241,7 +241,7 @@ date::add_seconds_from() {
 #
 # @stdout timestamp.
 date::add_days() {
-    declare timestamp new_timestamp day
+    local timestamp new_timestamp day
     timestamp="$(date::now)"
     day=${1:-1}
     new_timestamp="$(date::add_days_from "${timestamp}" "${second}")" || return $?
@@ -263,7 +263,7 @@ date::add_days() {
 #
 # @stdout timestamp.
 date::add_months() {
-    declare timestamp new_timestamp month
+    local timestamp new_timestamp month
     timestamp="$(date::now)"
     month=${1:-1}
     new_timestamp="$(date::add_months_from "${timestamp}" "${second}")" || return $?
@@ -285,7 +285,7 @@ date::add_months() {
 #
 # @stdout timestamp.
 date::add_years() {
-    declare timestamp new_timestamp year
+    local timestamp new_timestamp year
     timestamp="$(date::now)"
     year=${1:-1}
     new_timestamp="$(date::add_years_from "${timestamp}" "${second}")" || return $?
@@ -307,7 +307,7 @@ date::add_years() {
 #
 # @stdout timestamp.
 date::add_weeks() {
-    declare timestamp new_timestamp week
+    local timestamp new_timestamp week
     timestamp="$(date::now)"
     week=${1:-1}
     new_timestamp="$(date::add_weeks_from "${timestamp}" "${second}")" || return $?
@@ -329,7 +329,7 @@ date::add_weeks() {
 #
 # @stdout timestamp.
 date::add_hours() {
-    declare timestamp new_timestamp hour
+    local timestamp new_timestamp hour
     timestamp="$(date::now)"
     hour=${1:-1}
     new_timestamp="$(date::add_hours_from "${timestamp}" "${second}")" || return $?
@@ -351,7 +351,7 @@ date::add_hours() {
 #
 # @stdout timestamp.
 date::add_minutes() {
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="$(date::now)"
     minute=${1:-1}
     new_timestamp="$(date::add_minutes_from "${timestamp}" "${second}")" || return $?
@@ -373,7 +373,7 @@ date::add_minutes() {
 #
 # @stdout timestamp.
 date::add_seconds() {
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="$(date::now)"
     second=${1:-1}
     new_timestamp="$(date::add_seconds_from "${timestamp}" "${second}")" || return $?
@@ -399,7 +399,7 @@ date::add_seconds() {
 date::sub_days_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp day
+    local timestamp new_timestamp day
     timestamp="${1}"
     day=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${day} days ago" +'%s')" || return $?
@@ -425,7 +425,7 @@ date::sub_days_from() {
 date::sub_months_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp month
+    local timestamp new_timestamp month
     timestamp="${1}"
     month=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${month} months ago" +'%s')" || return $?
@@ -451,7 +451,7 @@ date::sub_months_from() {
 date::sub_years_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp year
+    local timestamp new_timestamp year
     timestamp="${1}"
     year=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${year} years ago" +'%s')" || return $?
@@ -477,7 +477,7 @@ date::sub_years_from() {
 date::sub_weeks_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp week
+    local timestamp new_timestamp week
     timestamp="${1}"
     week=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${week} weeks ago" +'%s')" || return $?
@@ -503,7 +503,7 @@ date::sub_weeks_from() {
 date::sub_hours_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp hour
+    local timestamp new_timestamp hour
     timestamp="${1}"
     hour=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${hour} hours ago" +'%s')" || return $?
@@ -529,7 +529,7 @@ date::sub_hours_from() {
 date::sub_minutes_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="${1}"
     minute=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${minute} minutes ago" +'%s')" || return $?
@@ -555,7 +555,7 @@ date::sub_minutes_from() {
 date::sub_seconds_from() {
     (( $# == 0 )) && return 2
 
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="${1}"
     second=${2:-1}
     new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${second} seconds ago" +'%s')" || return $?
@@ -577,7 +577,7 @@ date::sub_seconds_from() {
 #
 # @stdout timestamp.
 date::sub_days() {
-    declare timestamp new_timestamp day
+    local timestamp new_timestamp day
     timestamp="$(date::now)"
     day=${1:-1}
     new_timestamp="$(date::sub_days_from "${timestamp}" "${second}")" || return $?
@@ -599,7 +599,7 @@ date::sub_days() {
 #
 # @stdout timestamp.
 date::sub_months() {
-    declare timestamp new_timestamp month
+    local timestamp new_timestamp month
     timestamp="$(date::now)"
     month=${1:-1}
     new_timestamp="$(date::sub_months_from "${timestamp}" "${second}")" || return $?
@@ -621,7 +621,7 @@ date::sub_months() {
 #
 # @stdout timestamp.
 date::sub_years() {
-    declare timestamp new_timestamp year
+    local timestamp new_timestamp year
     timestamp="$(date::now)"
     year=${1:-1}
     new_timestamp="$(date::sub_years_from "${timestamp}" "${second}")" || return $?
@@ -643,7 +643,7 @@ date::sub_years() {
 #
 # @stdout timestamp.
 date::sub_weeks() {
-    declare timestamp new_timestamp week
+    local timestamp new_timestamp week
     timestamp="$(date::now)"
     week=${1:-1}
     new_timestamp="$(date::sub_weeks_from "${timestamp}" "${second}")" || return $?
@@ -665,7 +665,7 @@ date::sub_weeks() {
 #
 # @stdout timestamp.
 date::sub_hours() {
-    declare timestamp new_timestamp hour
+    local timestamp new_timestamp hour
     timestamp="$(date::now)"
     hour=${1:-1}
     new_timestamp="$(date::sub_hours_from "${timestamp}" "${second}")" || return $?
@@ -687,7 +687,7 @@ date::sub_hours() {
 #
 # @stdout timestamp.
 date::sub_minutes() {
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="$(date::now)"
     minute=${1:-1}
     new_timestamp="$(date::sub_minutes_from "${timestamp}" "${second}")" || return $?
@@ -709,7 +709,7 @@ date::sub_minutes() {
 #
 # @stdout timestamp.
 date::sub_seconds() {
-    declare timestamp new_timestamp minute
+    local timestamp new_timestamp minute
     timestamp="$(date::now)"
     second=${1:-1}
     new_timestamp="$(date::sub_seconds_from "${timestamp}" "${second}")" || return $?
@@ -735,7 +735,7 @@ date::sub_seconds() {
 date::format() {
     (( $# == 0 )) && return 2
 
-    declare timestamp format out
+    local timestamp format out
     timestamp="${1}"
     format="${2:-"%F %T"}"
     out="$(date -d "@${timestamp}" +"${format}")" || return $?
