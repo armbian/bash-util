@@ -37,7 +37,7 @@ date::now() {
 #
 # @stdout timestamp for specified datetime.
 date::epoc() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare date
     date=$(date -d "${1}" +"%s") || return $?
@@ -61,7 +61,7 @@ date::epoc() {
 #
 # @stdout timestamp.
 date::add_days_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp day
     timestamp="${1}"
@@ -87,7 +87,7 @@ date::add_days_from() {
 #
 # @stdout timestamp.
 date::add_months_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp month
     timestamp="${1}"
@@ -113,7 +113,7 @@ date::add_months_from() {
 #
 # @stdout timestamp.
 date::add_years_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp year
     timestamp="${1}"
@@ -139,7 +139,7 @@ date::add_years_from() {
 #
 # @stdout timestamp.
 date::add_weeks_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp week
     timestamp="${1}"
@@ -165,7 +165,7 @@ date::add_weeks_from() {
 #
 # @stdout timestamp.
 date::add_hours_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp hour
     timestamp="${1}"
@@ -191,7 +191,7 @@ date::add_hours_from() {
 #
 # @stdout timestamp.
 date::add_minutes_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp minute
     timestamp="${1}"
@@ -217,7 +217,7 @@ date::add_minutes_from() {
 #
 # @stdout timestamp.
 date::add_seconds_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp minute
     timestamp="${1}"
@@ -397,7 +397,7 @@ date::add_seconds() {
 #
 # @stdout timestamp.
 date::sub_days_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp day
     timestamp="${1}"
@@ -423,7 +423,7 @@ date::sub_days_from() {
 #
 # @stdout timestamp.
 date::sub_months_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp month
     timestamp="${1}"
@@ -449,7 +449,7 @@ date::sub_months_from() {
 #
 # @stdout timestamp.
 date::sub_years_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp year
     timestamp="${1}"
@@ -475,7 +475,7 @@ date::sub_years_from() {
 #
 # @stdout timestamp.
 date::sub_weeks_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp week
     timestamp="${1}"
@@ -501,7 +501,7 @@ date::sub_weeks_from() {
 #
 # @stdout timestamp.
 date::sub_hours_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp hour
     timestamp="${1}"
@@ -527,7 +527,7 @@ date::sub_hours_from() {
 #
 # @stdout timestamp.
 date::sub_minutes_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp minute
     timestamp="${1}"
@@ -553,7 +553,7 @@ date::sub_minutes_from() {
 #
 # @stdout timestamp.
 date::sub_seconds_from() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp new_timestamp minute
     timestamp="${1}"
@@ -733,7 +733,7 @@ date::sub_seconds() {
 #
 # @stdout formatted time string.
 date::format() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
     declare timestamp format out
     timestamp="${1}"
