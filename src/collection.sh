@@ -202,38 +202,32 @@ collection::map() {
     done
 }
 
-# @description The opposite of filter function; this method returns the elements of collection that iteratee does not return true.
-# Input to the function can be a pipe output, here-string or file.
+# @description The opposite of the filter function; return all elements for which the predicate is false.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
-#   arri=("1" "2" "3" "a")
-#   printf "%s\n" "${arri[@]}" | collection::reject "variable::is_numeric"
-#   #Ouput
+#   arr=("1" "2" "3" "a")
+#   printf "%s\n" "${arr[@]}" | collection::reject "variable::is_numeric"
+#   #Output
 #   a
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout array values not matching the iteratee function.
+# @stdout array Values for which the predicate is false.
 # @see collection::filter
 collection::reject() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
+    local it pred="$1" IFS=$'\n'
     while read -r it; do
-
-        if [[ "${func}" == *"$"* ]]; then
-            eval "${func}"
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred"
         else
-            eval "${func}" "'$it'"
-        fi
-        local -i ret=$?
-        if [[ $ret -ne 0 ]]; then
-            echo "$it"
-        fi
-
+            eval "$pred" "'$it'"
+        fi || printf "%s\n" "$it"
     done
 }
 
