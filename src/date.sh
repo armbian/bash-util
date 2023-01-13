@@ -44,30 +44,27 @@ date::epoch() {
     printf "%s" "$ts"
 }
 
-# @description Add number of days from specified timestamp.
-# If number of days not specified then it defaults to 1 day.
+# @description Add number of days to the specified timestamp.
 #
 # @example
-#   echo "$(date::add_days_to "1594143480")"
+#   date::add_days_to 1594143480 1
 #   #Output
 #   1594229880
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of days (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of days to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::add_days_to() {
-    (( $# == 0 )) && return 2
+    (( $# < 2 )) && return 2
 
-    local ts new_ts day
-    ts="${1}"
-    day=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${day} day" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts days=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') + $days day" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
 # @description Add number of months from specified timestamp.
