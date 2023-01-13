@@ -3,23 +3,23 @@
 # @file Date
 # @brief Functions for manipulating dates.
 
-# @description Get current time in unix timestamp.
+# @description Get current time as unix timestamp.
 #
 # @example
-#   echo "$(date::now)"
+#   date::now
 #   #Output
 #   1591554426
 #
 # @noargs
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout current timestamp.
+# @stdout Current timestamp.
 date::now() {
-    local now
-    now="$(date --universal +%s)" || return $?
-    printf "%s" "${now}"
+    local ts
+    ts="$(date --universal +%s)" || return
+    printf "%s" "$ts"
 }
 
 # @description convert datetime string to unix timestamp.
