@@ -22,26 +22,26 @@ date::now() {
     printf "%s" "$ts"
 }
 
-# @description convert datetime string to unix timestamp.
+# @description Convert datetime string to unix timestamp.
 #
 # @example
-#   echo "$(date::epoch "2020-07-07 18:38")"
+#   date::epoch "2020-07-07 18:38"
 #   #Output
 #   1594143480
 #
-# @arg $1 string date time in any format.
+# @arg $1 string Datetime in any format.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp for specified datetime.
+# @stdout Timestamp for the specified datetime.
 date::epoch() {
     (( $# == 0 )) && return 2
 
-    local date
-    date=$(date -d "${1}" +"%s") || return $?
-    printf "%s" "${date}"
+    local ts
+    ts=$(date -d "$1" +"%s") || return
+    printf "%s" "$ts"
 }
 
 # @description Add number of days from specified timestamp.
