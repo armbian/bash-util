@@ -25,7 +25,7 @@ date::now() {
 # @description convert datetime string to unix timestamp.
 #
 # @example
-#   echo "$(date::epoc "2020-07-07 18:38")"
+#   echo "$(date::epoch "2020-07-07 18:38")"
 #   #Output
 #   1594143480
 #
@@ -36,7 +36,7 @@ date::now() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp for specified datetime.
-date::epoc() {
+date::epoch() {
     (( $# == 0 )) && return 2
 
     local date
@@ -48,7 +48,7 @@ date::epoc() {
 # If number of days not specified then it defaults to 1 day.
 #
 # @example
-#   echo "$(date::add_days_from "1594143480")"
+#   echo "$(date::add_days_to "1594143480")"
 #   #Output
 #   1594229880
 #
@@ -60,7 +60,7 @@ date::epoc() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_days_from() {
+date::add_days_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp day
@@ -74,7 +74,7 @@ date::add_days_from() {
 # If number of months not specified then it defaults to 1 month.
 #
 # @example
-#   echo "$(date::add_months_from "1594143480")"
+#   echo "$(date::add_months_to "1594143480")"
 #   #Output
 #   1596821880
 #
@@ -86,7 +86,7 @@ date::add_days_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_months_from() {
+date::add_months_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp month
@@ -100,7 +100,7 @@ date::add_months_from() {
 # If number of years not specified then it defaults to 1 year.
 #
 # @example
-#   echo "$(date::add_years_from "1594143480")"
+#   echo "$(date::add_years_to "1594143480")"
 #   #Output
 #   1625679480
 #
@@ -112,7 +112,7 @@ date::add_months_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_years_from() {
+date::add_years_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp year
@@ -126,7 +126,7 @@ date::add_years_from() {
 # If number of weeks not specified then it defaults to 1 week.
 #
 # @example
-#   echo "$(date::add_weeks_from "1594143480")"
+#   echo "$(date::add_weeks_to "1594143480")"
 #   #Output
 #   1594748280
 #
@@ -138,7 +138,7 @@ date::add_years_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_weeks_from() {
+date::add_weeks_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp week
@@ -152,7 +152,7 @@ date::add_weeks_from() {
 # If number of hours not specified then it defaults to 1 hour.
 #
 # @example
-#   echo "$(date::add_hours_from "1594143480")"
+#   echo "$(date::add_hours_to "1594143480")"
 #   #Output
 #   1594147080
 #
@@ -164,7 +164,7 @@ date::add_weeks_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_hours_from() {
+date::add_hours_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp hour
@@ -178,7 +178,7 @@ date::add_hours_from() {
 # If number of minutes not specified then it defaults to 1 minute.
 #
 # @example
-#   echo "$(date::add_minutes_from "1594143480")"
+#   echo "$(date::add_minutes_to "1594143480")"
 #   #Output
 #   1594143540
 #
@@ -190,7 +190,7 @@ date::add_hours_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_minutes_from() {
+date::add_minutes_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp minute
@@ -204,7 +204,7 @@ date::add_minutes_from() {
 # If number of seconds not specified then it defaults to 1 second.
 #
 # @example
-#   echo "$(date::add_seconds_from "1594143480")"
+#   echo "$(date::add_seconds_to "1594143480")"
 #   #Output
 #   1594143481
 #
@@ -216,7 +216,7 @@ date::add_minutes_from() {
 # @exitcode 2 Function missing arguments.
 #
 # @stdout timestamp.
-date::add_seconds_from() {
+date::add_seconds_to() {
     (( $# == 0 )) && return 2
 
     local timestamp new_timestamp minute
@@ -244,7 +244,7 @@ date::add_days() {
     local timestamp new_timestamp day
     timestamp="$(date::now)"
     day=${1:-1}
-    new_timestamp="$(date::add_days_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_days_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -266,7 +266,7 @@ date::add_months() {
     local timestamp new_timestamp month
     timestamp="$(date::now)"
     month=${1:-1}
-    new_timestamp="$(date::add_months_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_months_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -288,7 +288,7 @@ date::add_years() {
     local timestamp new_timestamp year
     timestamp="$(date::now)"
     year=${1:-1}
-    new_timestamp="$(date::add_years_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_years_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -310,7 +310,7 @@ date::add_weeks() {
     local timestamp new_timestamp week
     timestamp="$(date::now)"
     week=${1:-1}
-    new_timestamp="$(date::add_weeks_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_weeks_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -332,7 +332,7 @@ date::add_hours() {
     local timestamp new_timestamp hour
     timestamp="$(date::now)"
     hour=${1:-1}
-    new_timestamp="$(date::add_hours_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_hours_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -354,7 +354,7 @@ date::add_minutes() {
     local timestamp new_timestamp minute
     timestamp="$(date::now)"
     minute=${1:-1}
-    new_timestamp="$(date::add_minutes_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_minutes_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
@@ -376,7 +376,7 @@ date::add_seconds() {
     local timestamp new_timestamp minute
     timestamp="$(date::now)"
     second=${1:-1}
-    new_timestamp="$(date::add_seconds_from "${timestamp}" "${second}")" || return $?
+    new_timestamp="$(date::add_seconds_to "${timestamp}" "${second}")" || return $?
     printf "%s" "${new_timestamp}"
 }
 
