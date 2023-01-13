@@ -231,35 +231,28 @@ collection::reject() {
     done
 }
 
-# @description Checks if iteratee returns true for any element of the array.
-# Input to the function can be a pipe output, here-string or file.
+# @description Check if the predicate returns true for at least one element of the collection.
+# Input to the function can be pipe output, here-string or a file.
+#
 # @example
-#   arr=("a" "b" "3" "a")
-#   printf "%s\n" "${arr[@]}" | collection::reject "variable::is_numeric"
+#   arr=("a" "b" "3" "c")
+#   printf "%s\n" "${arr[@]}" | collection::some "variable::is_numeric"
 #
-# @arg $1 string Iteratee function.
+# @arg $1 string Name of the predicate function.
 #
-# @exitcode 0  If match successful.
-# @exitcode 1 If no match found.
+# @exitcode 0 If the predicate was true for at least one element.
+# @exitcode 1 Otherwise.
 # @exitcode 2 Function missing arguments.
 collection::some() {
     (( $# == 0 )) && return 2
 
-    local func="${1}"
-    local IFS=$'\n'
+    local it pred="$1" IFS=$'\n'
     while read -r it; do
-
-        if [[ "${func}" == *"$"* ]]; then
-            eval "${func}"
+        if [[ "$pred" == *"$"* ]]; then
+            eval "$pred"
         else
-            eval "${func}" "'$it'"
-        fi
-
-        local -i ret=$?
-
-        if [[ $ret -eq 0 ]]; then
-            return 0
-        fi
+            eval "$pred" "'$it'"
+        fi && return
     done
 
     return 1
