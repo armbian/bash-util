@@ -63,11 +63,11 @@ date::epoch() {
 date::add_days_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp day
-    timestamp="${1}"
+    local ts new_ts day
+    ts="${1}"
     day=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${day} day" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${day} day" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of months from specified timestamp.
@@ -89,11 +89,11 @@ date::add_days_to() {
 date::add_months_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp month
-    timestamp="${1}"
+    local ts new_ts month
+    ts="${1}"
     month=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${month} month" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${month} month" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of years from specified timestamp.
@@ -115,11 +115,11 @@ date::add_months_to() {
 date::add_years_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp year
-    timestamp="${1}"
+    local ts new_ts year
+    ts="${1}"
     year=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${year} year" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${year} year" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of weeks from specified timestamp.
@@ -141,11 +141,11 @@ date::add_years_to() {
 date::add_weeks_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp week
-    timestamp="${1}"
+    local ts new_ts week
+    ts="${1}"
     week=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${week} week" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${week} week" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of hours from specified timestamp.
@@ -167,11 +167,11 @@ date::add_weeks_to() {
 date::add_hours_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp hour
-    timestamp="${1}"
+    local ts new_ts hour
+    ts="${1}"
     hour=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${hour} hour" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${hour} hour" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of minutes from specified timestamp.
@@ -193,11 +193,11 @@ date::add_hours_to() {
 date::add_minutes_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp minute
-    timestamp="${1}"
+    local ts new_ts minute
+    ts="${1}"
     minute=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${minute} minute" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${minute} minute" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of seconds from specified timestamp.
@@ -219,11 +219,11 @@ date::add_minutes_to() {
 date::add_seconds_to() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp minute
-    timestamp="${1}"
+    local ts new_ts minute
+    ts="${1}"
     second=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T')+${second} second" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T')+${second} second" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of days from current day timestamp.
@@ -241,11 +241,11 @@ date::add_seconds_to() {
 #
 # @stdout timestamp.
 date::add_days() {
-    local timestamp new_timestamp day
-    timestamp="$(date::now)"
+    local ts new_ts day
+    ts="$(date::now)"
     day=${1:-1}
-    new_timestamp="$(date::add_days_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_days_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of months from current day timestamp.
@@ -263,11 +263,11 @@ date::add_days() {
 #
 # @stdout timestamp.
 date::add_months() {
-    local timestamp new_timestamp month
-    timestamp="$(date::now)"
+    local ts new_ts month
+    ts="$(date::now)"
     month=${1:-1}
-    new_timestamp="$(date::add_months_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_months_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of years from current day timestamp.
@@ -285,11 +285,11 @@ date::add_months() {
 #
 # @stdout timestamp.
 date::add_years() {
-    local timestamp new_timestamp year
-    timestamp="$(date::now)"
+    local ts new_ts year
+    ts="$(date::now)"
     year=${1:-1}
-    new_timestamp="$(date::add_years_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_years_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of weeks from current day timestamp.
@@ -307,11 +307,11 @@ date::add_years() {
 #
 # @stdout timestamp.
 date::add_weeks() {
-    local timestamp new_timestamp week
-    timestamp="$(date::now)"
+    local ts new_ts week
+    ts="$(date::now)"
     week=${1:-1}
-    new_timestamp="$(date::add_weeks_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_weeks_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of hours from current day timestamp.
@@ -329,11 +329,11 @@ date::add_weeks() {
 #
 # @stdout timestamp.
 date::add_hours() {
-    local timestamp new_timestamp hour
-    timestamp="$(date::now)"
+    local ts new_ts hour
+    ts="$(date::now)"
     hour=${1:-1}
-    new_timestamp="$(date::add_hours_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_hours_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of minutes from current day timestamp.
@@ -351,11 +351,11 @@ date::add_hours() {
 #
 # @stdout timestamp.
 date::add_minutes() {
-    local timestamp new_timestamp minute
-    timestamp="$(date::now)"
+    local ts new_ts minute
+    ts="$(date::now)"
     minute=${1:-1}
-    new_timestamp="$(date::add_minutes_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_minutes_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Add number of seconds from current day timestamp.
@@ -373,11 +373,11 @@ date::add_minutes() {
 #
 # @stdout timestamp.
 date::add_seconds() {
-    local timestamp new_timestamp minute
-    timestamp="$(date::now)"
+    local ts new_ts minute
+    ts="$(date::now)"
     second=${1:-1}
-    new_timestamp="$(date::add_seconds_to "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::add_seconds_to "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of days from specified timestamp.
@@ -399,11 +399,11 @@ date::add_seconds() {
 date::sub_days_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp day
-    timestamp="${1}"
+    local ts new_ts day
+    ts="${1}"
     day=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${day} days ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${day} days ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of months from specified timestamp.
@@ -425,11 +425,11 @@ date::sub_days_from() {
 date::sub_months_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp month
-    timestamp="${1}"
+    local ts new_ts month
+    ts="${1}"
     month=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${month} months ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${month} months ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of years from specified timestamp.
@@ -451,11 +451,11 @@ date::sub_months_from() {
 date::sub_years_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp year
-    timestamp="${1}"
+    local ts new_ts year
+    ts="${1}"
     year=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${year} years ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${year} years ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of weeks from specified timestamp.
@@ -477,11 +477,11 @@ date::sub_years_from() {
 date::sub_weeks_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp week
-    timestamp="${1}"
+    local ts new_ts week
+    ts="${1}"
     week=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${week} weeks ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${week} weeks ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of hours from specified timestamp.
@@ -503,11 +503,11 @@ date::sub_weeks_from() {
 date::sub_hours_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp hour
-    timestamp="${1}"
+    local ts new_ts hour
+    ts="${1}"
     hour=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${hour} hours ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${hour} hours ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of minutes from specified timestamp.
@@ -529,11 +529,11 @@ date::sub_hours_from() {
 date::sub_minutes_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp minute
-    timestamp="${1}"
+    local ts new_ts minute
+    ts="${1}"
     minute=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${minute} minutes ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${minute} minutes ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of seconds from specified timestamp.
@@ -555,11 +555,11 @@ date::sub_minutes_from() {
 date::sub_seconds_from() {
     (( $# == 0 )) && return 2
 
-    local timestamp new_timestamp minute
-    timestamp="${1}"
+    local ts new_ts minute
+    ts="${1}"
     second=${2:-1}
-    new_timestamp="$(date -d "$(date -d "@${timestamp}" '+%F %T') ${second} seconds ago" +'%s')" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${second} seconds ago" +'%s')" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of days from current day timestamp.
@@ -577,11 +577,11 @@ date::sub_seconds_from() {
 #
 # @stdout timestamp.
 date::sub_days() {
-    local timestamp new_timestamp day
-    timestamp="$(date::now)"
+    local ts new_ts day
+    ts="$(date::now)"
     day=${1:-1}
-    new_timestamp="$(date::sub_days_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_days_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of months from current day timestamp.
@@ -599,11 +599,11 @@ date::sub_days() {
 #
 # @stdout timestamp.
 date::sub_months() {
-    local timestamp new_timestamp month
-    timestamp="$(date::now)"
+    local ts new_ts month
+    ts="$(date::now)"
     month=${1:-1}
-    new_timestamp="$(date::sub_months_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_months_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of years from current day timestamp.
@@ -621,11 +621,11 @@ date::sub_months() {
 #
 # @stdout timestamp.
 date::sub_years() {
-    local timestamp new_timestamp year
-    timestamp="$(date::now)"
+    local ts new_ts year
+    ts="$(date::now)"
     year=${1:-1}
-    new_timestamp="$(date::sub_years_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_years_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of weeks from current day timestamp.
@@ -643,11 +643,11 @@ date::sub_years() {
 #
 # @stdout timestamp.
 date::sub_weeks() {
-    local timestamp new_timestamp week
-    timestamp="$(date::now)"
+    local ts new_ts week
+    ts="$(date::now)"
     week=${1:-1}
-    new_timestamp="$(date::sub_weeks_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_weeks_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of hours from current day timestamp.
@@ -665,11 +665,11 @@ date::sub_weeks() {
 #
 # @stdout timestamp.
 date::sub_hours() {
-    local timestamp new_timestamp hour
-    timestamp="$(date::now)"
+    local ts new_ts hour
+    ts="$(date::now)"
     hour=${1:-1}
-    new_timestamp="$(date::sub_hours_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_hours_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of minutes from current day timestamp.
@@ -687,11 +687,11 @@ date::sub_hours() {
 #
 # @stdout timestamp.
 date::sub_minutes() {
-    local timestamp new_timestamp minute
-    timestamp="$(date::now)"
+    local ts new_ts minute
+    ts="$(date::now)"
     minute=${1:-1}
-    new_timestamp="$(date::sub_minutes_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_minutes_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Subtract number of seconds from current day timestamp.
@@ -709,11 +709,11 @@ date::sub_minutes() {
 #
 # @stdout timestamp.
 date::sub_seconds() {
-    local timestamp new_timestamp minute
-    timestamp="$(date::now)"
+    local ts new_ts minute
+    ts="$(date::now)"
     second=${1:-1}
-    new_timestamp="$(date::sub_seconds_from "${timestamp}" "${second}")" || return $?
-    printf "%s" "${new_timestamp}"
+    new_ts="$(date::sub_seconds_from "${ts}" "${second}")" || return $?
+    printf "%s" "${new_ts}"
 }
 
 # @description Format unix timestamp to human readable format.
@@ -735,10 +735,10 @@ date::sub_seconds() {
 date::format() {
     (( $# == 0 )) && return 2
 
-    local timestamp format out
-    timestamp="${1}"
+    local ts format out
+    ts="${1}"
     format="${2:-"%F %T"}"
-    out="$(date -d "@${timestamp}" +"${format}")" || return $?
+    out="$(date -d "@${ts}" +"${format}")" || return $?
     printf "%s" "${out}"
 
 }
