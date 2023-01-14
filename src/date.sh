@@ -647,28 +647,25 @@ date::sub_seconds_from_now() {
 }
 
 # @description Format unix timestamp to human readable format.
-# If format string is not specified then it defaults to "yyyy-mm-dd hh:mm:ss" format.
+# If the format string is omitted, it defaults to an equivalent of "yyyy-mm-dd hh:mm:ss".
 #
 # @example
-#   echo echo "$(date::format "1594143480")"
+#   date::format 1594143480
 #   #Output
 #   2020-07-07 18:38:00
 #
-# @arg $1 int unix timestamp.
-# @arg $2 string format control characters based on `date` command (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 string Format string based on the `date` command (optional).
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate time string.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout formatted time string.
+# @stdout Formatted datetime string.
 date::format() {
     (( $# == 0 )) && return 2
 
-    local ts format out
-    ts="${1}"
-    format="${2:-"%F %T"}"
-    out="$(date -d "@${ts}" +"${format}")" || return $?
-    printf "%s" "${out}"
-
+    local ts="$1" fmt="${2:-"%F %T"}" out
+    out="$(date -d "@$ts" +"$fmt")" || return
+    printf "%s" "$out"
 }
