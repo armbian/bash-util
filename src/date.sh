@@ -345,18 +345,17 @@ date::add_seconds_to_now() {
     printf "%s" "$new_ts"
 }
 
-# @description Subtract number of days from specified timestamp.
-# If number of days not specified then it defaults to 1 day.
+# @description Subtract number of days from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_days_from "1594143480")"
+#   date::sub_days_from 1594143480 1
 #   #Output
 #   1594057080
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of days (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of days to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
@@ -364,167 +363,147 @@ date::add_seconds_to_now() {
 date::sub_days_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts day
-    ts="${1}"
-    day=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${day} days ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts days=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $days days ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of months from specified timestamp.
-# If number of months not specified then it defaults to 1 month.
+# @description Subtract number of months from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_months_from "1594143480")"
+#   date::sub_months_from 1594143480 1
 #   #Output
 #   1591551480
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of months (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of months to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_months_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts month
-    ts="${1}"
-    month=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${month} months ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts months=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $months months ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of years from specified timestamp.
-# If number of years not specified then it defaults to 1 year.
+# @description Subtract number of years from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_years_from "1594143480")"
+#   date::sub_years_from 1594143480 1
 #   #Output
 #   1562521080
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of years (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of years to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_years_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts year
-    ts="${1}"
-    year=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${year} years ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts years=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $years years ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of weeks from specified timestamp.
-# If number of weeks not specified then it defaults to 1 week.
+# @description Subtract number of weeks from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_weeks_from "1594143480")"
+#   date::sub_weeks_from 1594143480 1
 #   #Output
 #   1593538680
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of weeks (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of weeks to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_weeks_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts week
-    ts="${1}"
-    week=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${week} weeks ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts weeks=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $weeks weeks ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of hours from specified timestamp.
-# If number of hours not specified then it defaults to 1 hour.
+# @description Subtract number of hours from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_hours_from "1594143480")"
+#   date::sub_hours_from 1594143480 1
 #   #Output
 #   1594139880
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of hours (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of hours to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_hours_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts hour
-    ts="${1}"
-    hour=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${hour} hours ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts hours=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $hours hours ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of minutes from specified timestamp.
-# If number of minutes not specified then it defaults to 1 minute.
+# @description Subtract number of minutes from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_minutes_from "1594143480")"
+#   date::sub_minutes_from 1594143480 1
 #   #Output
 #   1594143420
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of minutes (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of minutes to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_minutes_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts minute
-    ts="${1}"
-    minute=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${minute} minutes ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts minutes=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T %Z') $minutes minutes ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Subtract number of seconds from specified timestamp.
-# If number of seconds not specified then it defaults to 1 second.
+# @description Subtract number of seconds from the specified timestamp.
 #
 # @example
-#   echo "$(date::sub_seconds_from "1594143480")"
+#   date::sub_seconds_from 1594143480 1
 #   #Output
 #   1594143479
 #
-# @arg $1 int unix timestamp.
-# @arg $2 int number of seconds (optional).
+# @arg $1 int Unix timestamp.
+# @arg $2 int Number of seconds to subtract.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::sub_seconds_from() {
     (( $# == 0 )) && return 2
 
-    local ts new_ts minute
-    ts="${1}"
-    second=${2:-1}
-    new_ts="$(date -d "$(date -d "@${ts}" '+%F %T') ${second} seconds ago" +'%s')" || return $?
-    printf "%s" "${new_ts}"
+    local ts="$1" new_ts seconds=$2
+    new_ts="$(date -d "$(date -d "@$ts" '+%F %T') $seconds seconds ago" +'%s')" || return
+    printf "%s" "$new_ts"
 }
 
 # @description Subtract number of days from current day timestamp.
