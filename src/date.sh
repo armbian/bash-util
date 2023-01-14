@@ -205,158 +205,144 @@ date::add_seconds_to() {
     printf "%s" "$new_ts"
 }
 
-# @description Add number of days from current day timestamp.
-# If number of days not specified then it defaults to 1 day.
+# @description Add number of days to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_days "1")"
+#   date::add_days_to_now 1
 #   #Output
 #   1591640826
 #
-# @arg $1 int number of days (optional).
+# @arg $1 int Number of days to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_days() {
-    local ts new_ts day
-    ts="$(date::now)"
-    day=${1:-1}
-    new_ts="$(date::add_days_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_days_to_now() {
+    local ts new_ts days=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_days_to "$ts" "$days")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of months from current day timestamp.
-# If number of months not specified then it defaults to 1 month.
+# @description Add number of months to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_months "1")"
+#   date::add_months_to_now 1
 #   #Output
 #   1594146426
 #
-# @arg $1 int number of months (optional).
+# @arg $1 int Number of months to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_months() {
-    local ts new_ts month
-    ts="$(date::now)"
-    month=${1:-1}
-    new_ts="$(date::add_months_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_months_to_now() {
+    local ts new_ts months=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_months_to "$ts" "$months")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of years from current day timestamp.
-# If number of years not specified then it defaults to 1 year.
+# @description Add number of years to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_years "1")"
+#   date::add_years_to_now 1
 #   #Output
 #   1623090426
 #
-# @arg $1 int number of years (optional).
+# @arg $1 int Number of years to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_years() {
-    local ts new_ts year
-    ts="$(date::now)"
-    year=${1:-1}
-    new_ts="$(date::add_years_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_years_to_now() {
+    local ts new_ts years=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_years_to "$ts" "$years")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of weeks from current day timestamp.
-# If number of weeks not specified then it defaults to 1 year.
+# @description Add number of weeks to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_weeks "1")"
+#   date::add_weeks_to_now 1
 #   #Output
 #   1592159226
 #
-# @arg $1 int number of weeks (optional).
+# @arg $1 int Number of weeks to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_weeks() {
-    local ts new_ts week
-    ts="$(date::now)"
-    week=${1:-1}
-    new_ts="$(date::add_weeks_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_weeks_to_now() {
+    local ts new_ts weeks=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_weeks_to "$ts" "$weeks")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of hours from current day timestamp.
-# If number of hours not specified then it defaults to 1 hour.
+# @description Add number of hours to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_hours "1")"
+#   date::add_hours_to_now 1
 #   #Output
 #   1591558026
 #
-# @arg $1 int number of hours (optional).
+# @arg $1 int Number of hours to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
+# @stdout New timestamp.
 date::add_hours() {
-    local ts new_ts hour
-    ts="$(date::now)"
-    hour=${1:-1}
-    new_ts="$(date::add_hours_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+    local ts new_ts hours=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_hours_to "$ts" "$hours")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of minutes from current day timestamp.
-# If number of minutes not specified then it defaults to 1 minute.
+# @description Add number of minutes to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_minutes "1")"
+#   date::add_minutes_to_now 1
 #   #Output
 #   1591554486
 #
-# @arg $2 int number of minutes (optional).
+# @arg $2 int Number of minutes to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_minutes() {
-    local ts new_ts minute
-    ts="$(date::now)"
-    minute=${1:-1}
-    new_ts="$(date::add_minutes_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_minutes_to_now() {
+    local ts new_ts minutes=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_minutes_to "$ts" "$minutes")" || return
+    printf "%s" "$new_ts"
 }
 
-# @description Add number of seconds from current day timestamp.
-# If number of seconds not specified then it defaults to 1 second.
+# @description Add number of seconds to the current (date::now) timestamp.
 #
 # @example
-#   echo "$(date::add_seconds "1")"
+#   date::add_seconds_to_now 1
 #   #Output
 #   1591554427
 #
-# @arg $2 int number of seconds (optional).
+# @arg $2 int Number of seconds to add.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 1 If unable to generate timestamp.
 #
-# @stdout timestamp.
-date::add_seconds() {
-    local ts new_ts minute
-    ts="$(date::now)"
-    second=${1:-1}
-    new_ts="$(date::add_seconds_to "${ts}" "${second}")" || return $?
-    printf "%s" "${new_ts}"
+# @stdout New timestamp.
+date::add_seconds_to_now() {
+    local ts new_ts seconds=$1
+    ts="$(date::now)" || return
+    new_ts="$(date::add_seconds_to "$ts" "$seconds")" || return
+    printf "%s" "$new_ts"
 }
 
 # @description Subtract number of days from specified timestamp.
