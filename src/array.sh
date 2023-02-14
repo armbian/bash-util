@@ -186,14 +186,14 @@ array::sort() {
 
     local -a arr=("$@") sorted
 
-    local noglobstate="$(shopt -po noglob)"
+    local old_state="$(shopt -po noglob)"
     set -o noglob
 
     local IFS=$'\n'
     sorted=($(sort <<< "${arr[*]}"))
     unset IFS
 
-    eval "$noglobstate"
+    eval "$old_state"
 
     printf "%s\n" "${sorted[@]}"
 }
@@ -222,14 +222,14 @@ array::rsort() {
 
     local -a arr=("$@") sorted
 
-    local noglobstate="$(shopt -po noglob)"
+    local old_state="$(shopt -po noglob)"
     set -o noglob
 
     local IFS=$'\n'
     sorted=($(sort -r <<< "${arr[*]}"))
     unset IFS
 
-    eval "$noglobstate"
+    eval "$old_state"
 
     printf "%s\n" "${sorted[@]}"
 }
