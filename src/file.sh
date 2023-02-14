@@ -3,220 +3,247 @@
 # @file File
 # @brief Functions for handling files.
 
-# @description Create temporary file.
-# Function creates temporary file with random name. The temporary file will be deleted when script finishes.
+# @description Create temp file.
+# This function creates temp file with random name and prints its name to stdout.
 #
 # @example
-#   echo "$(file::make_temp_file)"
+#   temp=$(file::make_temp_file)
+#   trap "rm -f \"$temp\"" EXIT
+#   printf "%s\n" "$temp"
 #   #Output
-#   tmp.vgftzy
+#   /tmp/tmp.vgftzy
 #
-# @noargs
+# @arg $1 string Directory where to create the file (optional). Defaults to /tmp.
 #
-# @exitcode 0  If successful.
-# @exitcode 1 If failed to create temp file.
+# @exitcode 0 If successful.
+# @exitcode 1 On failure to create temp file.
 #
-# @stdout file name of temporary file created.
+# @stdout Name of the created temp file.
 file::make_temp_file() {
-    declare temp_file
-    type -p mktemp &> /dev/null && { temp_file="$(mktemp -u)" || temp_file="${PWD}/$((RANDOM * 2)).LOG"; }
-    trap 'rm -f "${temp_file}"' EXIT
-    printf "%s" "${temp_file}"
+    local pre="${1:-/tmp}"
+
+    type -p mktemp &> /dev/null && mktemp -p "$pre" || {
+        local tmp="${pre}/tmp.$((RANDOM * RANDOM))"
+        touch "$tmp" && printf "%s\n" "$tmp"
+    }
 }
 
-# @description Create temporary directory.
-# Function creates temporary directory with random name. The temporary directory will be deleted when script finishes.
+# @description Create temp directory.
+# This function creates temp directory with random name and prints its name to stdout.
 #
 # @example
-#   echo "$(utility::make_temp_dir)"
+#   temp=$(file::make_temp_dir)
+#   trap "rm -rf \"$temp\"" EXIT
+#   printf "%s\n" "$temp"
 #   #Output
-#   tmp.rtfsxy
+#   /tmp/tmp.rtfsxy
 #
-# @arg $1 string Temporary directory prefix
-# @arg $2  string Flag to auto remove directory on exit trap (true)
+# @arg $1 string Temp directory prefix (optional). Defaults to /tmp.
 #
-# @exitcode 0  If successful.
-# @exitcode 1 If failed to create temp directory.
-# @exitcode 2 Missing arguments.
+# @exitcode 0 If successful.
+# @exitcode 1 On failure to create temp directory.
 #
-# @stdout directory name of temporary directory created.
+# @stdout Name of the created temp directory.
 file::make_temp_dir() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
-    declare temp_dir prefix="${1}" trap_rm="${2}"
-    temp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t "${prefix}")
-    if [[ -n "${trap_rm}" ]]; then
-        trap 'rm -rf "${temp_dir}"' EXIT
-    fi
-    printf "%s" "${temp_dir}"
+    local pre="${1:-/tmp}"
+
+    type -p mktemp &> /dev/null && mktemp -d -p "$pre" || {
+        local tmp="${pre}/tmp.$((RANDOM * RANDOM))"
+        mkdir "$tmp" && printf "%s\n" "$tmp"
+    }
 }
 
-# @description Get only the filename from string path.
+# @description Strip leading directory(ies) from a given path.
 #
 # @example
-#   echo "$(file::name "/path/to/test.md")"
+#   file::basename "/path/to/test.tar.gz"
 #   #Output
-#   test.md
-#
-# @arg $1 string path.
-#
-# @exitcode 0  If successful.
-# @exitcode 2 Function missing arguments.
-#
-# @stdout name of the file with extension.
-file::name() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
-    printf "%s" "${1##*/}"
-}
-
-# @description Get the basename of file from file name.
+#   test.tar.gz
 #
 # @example
-#   echo "$(file::basename "/path/to/test.md")"
+#   file::basename "/foo/bar/"
 #   #Output
-#   test
+#   bar
 #
-# @arg $1 string path.
+# @arg $1 string Path to file or directory.
 #
-# @exitcode 0  If successful.
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout basename of the file.
+# @stdout Final component of the path without the leading directory(ies).
 file::basename() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
-    declare file basename
-    file="${1##*/}"
-    basename="${file%.*}"
+    local old_state="$(shopt -p extglob)"
+    shopt -s extglob
+    local clean="${1%%+(/)}"
+    eval "$old_state"
 
-    printf "%s" "${basename}"
+    printf "%s" "${clean##*/}"
 }
 
-# @description Get the extension of file from file name.
+# @description Extract final extension from a given path.
 #
 # @example
-#   echo "$(file::extension "/path/to/test.md")"
+#   file::extension "/path/to/test.tar.gz"
 #   #Output
-#   md
+#   .gz
 #
-# @arg $1 string path.
+# @example
+#   file::extension "/foo.bar/baz" || echo "none"
+#   #Output
+#   none
 #
-# @exitcode 0  If successful.
-# @exitcode 1 If no extension is found in the filename.
+# @arg $1 string Path to file or directory.
+#
+# @exitcode 0 If successful.
+# @exitcode 1 If no extension was found.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout extension of the file.
+# @stdout Final extension.
 file::extension() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
-    declare file extension
-    file="${1##*/}"
-    extension="${file##*.}"
-    [[ "${file}" = "${extension}" ]] && return 1
+    local base
+    base="$(file::basename "$1")" || return
 
-    printf "%s" "${extension}"
+    local ext="${base##*.}"
+    [[ "$ext" != "$base" ]] && printf ".%s" "$ext" || return 1
 }
 
-# @description Get directory name from file path.
+# @description Remove final extension from a given path.
 #
 # @example
-#   echo "$(file::dirname "/path/to/test.md")"
+#   file::name "foo.bar.baz"
+#   #Output
+#   foo.bar
+#
+# @example
+#   file::name "/path/to/test.tar.gz"
+#   #Output
+#   /path/to/test.tar
+#
+# @arg $1 string Path to file or directory.
+#
+# @exitcode 0 If successful.
+# @exitcode 2 Function missing arguments.
+#
+# @stdout Path without the final extension.
+file::name() {
+    local ext
+    ext="$(file::extension "$1")" || return
+
+    local old_state="$(shopt -p extglob)"
+    shopt -s extglob
+    local name="${1%${ext}+(/)}"
+    eval "$old_state"
+
+    printf "%s" "$name"
+}
+
+# @description Extract leading directory(ies) from a given path.
+#
+# @example
+#   file::dirname "/path/to/test.tar.gz"
 #   #Output
 #   /path/to
 #
-# @arg $1 string path.
+# @example
+#   file::dirname "/foo/bar/"
+#   #Output
+#   /foo
 #
-# @exitcode 0  If successful.
+# @arg $1 string Path to file or directory.
+#
+# @exitcode 0 If successful.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout directory path.
+# @stdout Leading directory(ies) of the path.
 file::dirname() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
+    (( $# == 0 )) && return 2
 
-    declare tmp=${1:-.}
+    local dirs="$1"
+    [[ "$dirs" =~ ^/+$ ]] && dirs="/x" # make our life easier
 
-    [[ ${tmp} != *[!/]* ]] && { printf '/\n' && return; }
-    tmp="${tmp%%"${tmp##*[!/]}"}"
+    local old_state="$(shopt -p extglob)"
+    shopt -s extglob
+    dirs="${dirs%%+([^/])*(/)}"
+    eval "$old_state"
 
-    [[ ${tmp} != */* ]] && { printf '.\n' && return; }
-    tmp=${tmp%/*} && tmp="${tmp%%"${tmp##*[!/]}"}"
+    [[ "$dirs" != "/" ]] && dirs="${dirs%/}"
 
-    printf '%s' "${tmp:-/}"
+    printf "%s" "${dirs:-.}"
 }
 
-# @description Get absolute path of file or directory.
+# @description Convert given path to an absolute (full) path.
 #
 # @example
 #   file::full_path "../path/to/file.md"
 #   #Output
-#   /home/labbots/docs/path/to/file.md
+#   /home/user/doc/path/to/file.md
 #
-# @arg $1 string relative or absolute path to file/direcotry.
+# @arg $1 string Path to file or directory.
 #
-# @exitcode 0  If successful.
-# @exitcode 1  If file/directory does not exist.
+# @exitcode 0 If successful.
+# @exitcode 1 If the file/directory does not exist.
 # @exitcode 2 Function missing arguments.
 #
-# @stdout Absolute path to file/directory.
+# @stdout Absolute (full) path to the file or directory.
 file::full_path() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
-    declare input="${1}"
-    if [[ -f ${input} ]]; then
-        printf "%s/%s\n" "$(cd "$(file::dirname "${input}")" && pwd)" "${input##*/}"
-    elif [[ -d ${input} ]]; then
-        printf "%s\n" "$(cd "${input}" && pwd)"
+    (( $# == 0 )) && return 2
+
+    if [[ -f "$1" ]]; then
+        local dir="$(file::dirname "$1")" base="$(file::basename "$1")"
+        printf "%s/%s" "$(cd "$dir" && pwd)" "$base"
+    elif [[ -d "$1" ]]; then
+        printf "%s" "$(cd "$1" && pwd)"
     else
         return 1
     fi
 }
 
-# @description Get mime type of provided input.
+# @description Get MIME type of a given path.
 #
 # @example
 #   file::mime_type "../src/file.sh"
 #   #Output
 #   application/x-shellscript
 #
-# @arg $1 string relative or absolute path to file/directory.
+# @arg $1 string Path to file or directory.
 #
-# @exitcode 0  If successful.
-# @exitcode 1  If file/directory does not exist.
+# @exitcode 0 If successful.
+# @exitcode 1 If the file/directory does not exist.
 # @exitcode 2 Function missing arguments.
-# @exitcode 3 If file or mimetype command not found in system.
+# @exitcode 3 If neither `file` nor `mimetype` were found on the system.
 #
-# @stdout mime type of file/directory.
+# @stdout MIME type of the file/directory.
 file::mime_type() {
-    [[ $# = 0 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 2
-    declare mime_type
-    if [[ -f "${1}" ]] || [[ -d "${1}" ]]; then
-        if type -p mimetype &> /dev/null; then
-            mime_type=$(mimetype --output-format %m "${1}")
-        elif type -p file &> /dev/null; then
-            mime_type=$(file --brief --mime-type "${1}")
-        else
-            return 3
-        fi
+    (( $# == 0 )) && return 2
+
+    [[ ! -f "$1" && ! -d "$1" ]] && return 1
+
+    if type -p mimetype &> /dev/null; then
+        printf "%s" "$(mimetype --output-format %m "$1")"
+    elif type -p file &> /dev/null; then
+        printf "%s" "$(file --brief --mime-type "$1")"
     else
-        return 1
+        return 3
     fi
-    printf "%s" "${mime_type}"
 }
 
-# @description Search if a given pattern is found in file.
+# @description Check if the file contains given pattern.
 #
 # @example
-#   file::contains_text "./file.sh" "^[ @[:alpha:]]*"
-#   file::contains_text "./file.sh" "@file"
+#   file::contains "./file.sh" "^[ @[:alpha:]]*"
+#   file::contains "./file.sh" "@file"
 #   #Output
 #   0
 #
-# @arg $1 string relative or absolute path to file/directory.
-# @arg $2 string search key or regular expression.
+# @arg $1 string Path to file.
+# @arg $2 string Pattern (regular expression) to be searched.
 #
-# @exitcode 0  If given search parameter is found in file.
-# @exitcode 1  If search paramter not found in file.
+# @exitcode 0 If the given pattern was found in file.
+# @exitcode 1 Otherwise.
 # @exitcode 2 Function missing arguments.
-file::contains_text() {
-    [[ $# -lt 2 ]] && printf "%s: Missing arguments\n" "${FUNCNAME[0]}" && return 1
-    declare -r file="$1"
-    declare -r text="$2"
-    grep -q "$text" "$file"
+file::contains() {
+    (( $# != 2 )) && return 2
+    grep -q "$2" "$1"
 }
